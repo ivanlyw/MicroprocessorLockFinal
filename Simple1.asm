@@ -31,9 +31,9 @@ loop 	tblrd*+			; move one byte from PM to TABLAT, increment TBLPRT
 	movff	TABLAT, POSTINC0	; move read data from TABLAT to (FSR0), increment FSR0	
 	;movwf counter, ACCESS
 	
-	movlw 0x10
+	movlw 0xFF
 	movwf delayTime
-	call delay
+	call BigDelay
 	call light
 	decfsz	counter	; count down to zero
 	bra	loop		; keep going until finished
@@ -43,6 +43,10 @@ loop 	tblrd*+			; move one byte from PM to TABLAT, increment TBLPRT
 delay   decfsz delayTime
 	bra delay
 	return
+	
+BigDelay call delay	
+	 bra BigDelay
+	 return
 
 light   movff counter,PORTC
 	;movfw counter
