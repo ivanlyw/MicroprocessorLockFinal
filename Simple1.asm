@@ -33,9 +33,9 @@ loop 	tblrd*+			; move one byte from PM to TABLAT, increment TBLPRT
 	movff	TABLAT, POSTINC0	; move read data from TABLAT to (FSR0), increment FSR0	
 	;movwf counter, ACCESS
 	
-	movlw high(0xFFFF)
-	movwf highmemory
-	movlw low(0xFFFF)
+	movlw high(0xFFFF) ;reads highest charaters of 16 bit word
+	movwf highmemory 
+	movlw low(0xFFFF) ;reads lowest charaters of 16 bit word
 	movwf lowmemory
 	movwf delayTime
 	call BigDelay
@@ -51,8 +51,8 @@ delay   decfsz delayTime
 	
 BigDelay 
 	movlw 0x00
-dloop   decf lowmemory,f
-	subwfb highmemory, f
+dloop   decf lowmemory,f ;decraments low memory by 1
+	subwfb highmemory, f ;when low memory hits zero carry flag takes 256 bits from high memory
 	bc dloop
 	return
 	
