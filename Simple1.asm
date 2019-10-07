@@ -13,7 +13,7 @@ setup	bcf	EECON1, CFGS	; point to Flash program memory
 	; ******* My data and where to put it in RAM *
 myTable data	"This is just some data"
 	constant 	myArray=0x400	; Address in RAM for data
-	constant 	counter=0x10	; Address of counter variable
+	constant 	counter=0x20	; Address of counter variable
 	; ******* Main programme *********************
 start 	lfsr	FSR0, myArray	; Load FSR0 with address in RAM	
 	movlw	upper(myTable)	; address of data in PM
@@ -26,9 +26,20 @@ start 	lfsr	FSR0, myArray	; Load FSR0 with address in RAM
 	movwf 	counter		; our counter register
 loop 	tblrd*+			; move one byte from PM to TABLAT, increment TBLPRT
 	movff	TABLAT, POSTINC0	; move read data from TABLAT to (FSR0), increment FSR0	
-	decfsz	counter		; count down to zero
+	;movwf counter, ACCESS
+	;decfsz	counter	; count down to zero
+	call delay
+	call light
 	bra	loop		; keep going until finished
 	
 	goto	0
+	
+delay decfsz counter
+	bra delay
+	return
 
+light movlw counter
+	movwf LATC, ACCESS
+	movff counter, PORTC
+	
 	end
