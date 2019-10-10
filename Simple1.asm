@@ -14,9 +14,10 @@ setup	bcf	EECON1, CFGS	; point to Flash program memory
 myTable data	"This is just some data"
 	constant 	myArray=0x400	; Address in RAM for data
 	constant 	counter  =0x20	; Address of counter variable
-	constant	delayTime=0x22	; Address for delay counter
+	constant	delayTime=0xF15	; Address for delay counter
 	constant	highmemory=0x10 ;Address for high half of 16 bit memory
-	constant	lowmemory=0x11 ;Address for low memory
+	constant	lowmemory=0x11  ;Address for low memory
+	;constant	Full = 0x30
 	; ******* Main programme *********************
 start 	lfsr	FSR0, myArray	; Load FSR0 with address in RAM	
 	movlw	upper(myTable)	; address of data in PM
@@ -37,10 +38,12 @@ loop 	tblrd*+			; move one byte from PM to TABLAT, increment TBLPRT
 	movwf highmemory 
 	movlw low(0xFFFF) ;reads lowest charaters of 16 bit word
 	movwf lowmemory
+	
 	movwf delayTime
 	call BigDelay
 	call light
 	decfsz	counter	; count down to zero
+	call switch ; turns leds off if button is pushed
 	bra	loop		; keep going until finished
 	
 	goto	0
@@ -51,15 +54,19 @@ delay   decfsz delayTime
 	
 BigDelay 
 	movlw 0x00
-dloop   decf lowmemory,f ;decraments low memory by 1
-	subwfb highmemory, f ;when low memory hits zero carry flag takes 256 bits from high memory
+dloop   decf lowmemory,f    ;decraments low memory by 1
+	subwfb highmemory, f	;when low memory hits zero carry flag takes 256 bits from high memory
 	bc dloop
 	return
 	
 light   movff counter,PORTC
-	;movfw counter
-	;movwf LATC, ACCESS
-	;movff counter, PORTC
 	return
-	
+
+switch 	movlw 0x00
+	;movwf PORTD
+	tstfsz PORTD, ACCESS ;skips next instruction if portD is 0
+	movlw 0x00
+	movwf counter ;clears counter entry
+	return
+
 	end
