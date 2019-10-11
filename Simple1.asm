@@ -39,11 +39,12 @@ loop 	tblrd*+			; move one byte from PM to TABLAT, increment TBLPRT
 	movlw low(0xFFFF) ;reads lowest charaters of 16 bit word
 	movwf lowmemory
 	
-	movwf delayTime
+	;movwf delayTime
+	call switch ; turns leds off if button is pushed
 	call BigDelay
 	call light
 	decfsz	counter	; count down to zero
-	call switch ; turns leds off if button is pushed
+	
 	bra	loop		; keep going until finished
 	
 	goto	0
@@ -62,10 +63,11 @@ dloop   decf lowmemory,f    ;decraments low memory by 1
 light   movff counter,PORTC
 	return
 
-switch 	movlw 0x00
-	;movwf PORTD
+switch 	;movlw 0x00
+	movwf PORTD
 	tstfsz PORTD, ACCESS ;skips next instruction if portD is 0
 	movlw 0x00
+	tstfsz PORTD, ACCESS
 	movwf counter ;clears counter entry
 	return
 
