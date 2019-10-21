@@ -15,9 +15,9 @@ rst	code	0    ; reset vector
 
 pdata	code    ; a section of programme memory for storing data
 	; ******* myTable, data in programme memory, and its length *****
-myTable data	    "WHY?\n"	; message, plus carriage return
-	constant    myTable_l=.21	; length of data
-	
+myTable data	    "ABCDEFGHIJKLMONPQRSTUVWXYZ\n"	; message, plus carriage return
+	constant    myTable_l=.27	; length of data
+	constant    max = .16
 	
 main	code
 	; ******* Programme FLASH read Setup Code ***********************
@@ -45,7 +45,6 @@ loop 	tblrd*+			; one byte from PM to TABLAT, increment TBLPRT
 	movlw	myTable_l-1	; output message to LCD (leave out "\n")
 	lfsr	FSR2, myArray
 	call	LCD_Write_Message
-	;call	LCD_secondline
 	
 	movlw	myTable_l	; output message to UART
 	lfsr	FSR2, myArray
@@ -59,5 +58,15 @@ loop 	tblrd*+			; one byte from PM to TABLAT, increment TBLPRT
 delay	decfsz	delay_count	; decrement until zero
 	bra delay
 	return
+
+;TwoLine
+;	movlw	high(myTable_l)-1	; output message to LCD (leave out "\n")
+;	lfsr	FSR2, myArray
+;	call	LCD_Write_Message
+;	call	LCD_secondline
+;	movlw	low(myTable_l)-1	; output message to LCD (leave out "\n")
+;	lfsr	FSR2, myArray
+;	call	LCD_Write_Message
+;	return
 
 	end
