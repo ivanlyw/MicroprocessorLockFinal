@@ -18,6 +18,11 @@
       <itemPath>LCD.asm</itemPath>
       <itemPath>ADC.asm</itemPath>
       <itemPath>KEYBOARD.asm</itemPath>
+      <itemPath>ExternalMemory.asm</itemPath>
+      <itemPath>Functions.asm</itemPath>
+      <itemPath>Buttons.asm</itemPath>
+      <itemPath>Button_press.asm</itemPath>
+      <itemPath>Test.asm</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -66,6 +71,46 @@
         <makeCustomizationEnableLongLines>false</makeCustomizationEnableLongLines>
         <makeCustomizationNormalizeHexFile>false</makeCustomizationNormalizeHexFile>
       </makeCustomizationType>
+      <item path="ADC.asm" ex="false" overriding="false">
+        <MPASMWIN-AS>
+        </MPASMWIN-AS>
+        <MPASMWIN-LD>
+        </MPASMWIN-LD>
+        <mpasmsuite>
+        </mpasmsuite>
+      </item>
+      <item path="Button_press.asm" ex="false" overriding="false">
+        <MPASMWIN-AS>
+        </MPASMWIN-AS>
+        <MPASMWIN-LD>
+        </MPASMWIN-LD>
+        <mpasmsuite>
+        </mpasmsuite>
+      </item>
+      <item path="Buttons.asm" ex="true" overriding="false">
+        <MPASMWIN-AS>
+        </MPASMWIN-AS>
+        <MPASMWIN-LD>
+        </MPASMWIN-LD>
+        <mpasmsuite>
+        </mpasmsuite>
+      </item>
+      <item path="ExternalMemory.asm" ex="false" overriding="false">
+        <MPASMWIN-AS>
+        </MPASMWIN-AS>
+        <MPASMWIN-LD>
+        </MPASMWIN-LD>
+        <mpasmsuite>
+        </mpasmsuite>
+      </item>
+      <item path="Functions.asm" ex="false" overriding="false">
+        <MPASMWIN-AS>
+        </MPASMWIN-AS>
+        <MPASMWIN-LD>
+        </MPASMWIN-LD>
+        <mpasmsuite>
+        </mpasmsuite>
+      </item>
       <ICD3PlatformTool>
         <property key="AutoSelectMemRanges" value="auto"/>
         <property key="Freeze Peripherals" value="true"/>
@@ -73,7 +118,8 @@
         <property key="ToolFirmwareFilePath"
                   value="Press to browse for a specific firmware version"/>
         <property key="ToolFirmwareOption.UseLatestFirmware" value="true"/>
-        <property key="debugoptions.useswbreakpoints" value="false"/>
+        <property key="W0204_ADC_TAD_TOO_SMALL" value="report"/>
+        <property key="debugoptions.useswbreakpoints" value="true"/>
         <property key="firmware.download.all" value="false"/>
         <property key="hwtoolclock.frcindebug" value="false"/>
         <property key="memories.aux" value="false"/>
@@ -106,6 +152,22 @@
         <property key="programoptions.uselvpprogramming" value="false"/>
         <property key="voltagevalue" value="3.25"/>
       </ICD3PlatformTool>
+      <item path="KEYBOARD.asm" ex="false" overriding="false">
+        <MPASMWIN-AS>
+        </MPASMWIN-AS>
+        <MPASMWIN-LD>
+        </MPASMWIN-LD>
+        <mpasmsuite>
+        </mpasmsuite>
+      </item>
+      <item path="LCD.asm" ex="false" overriding="false">
+        <MPASMWIN-AS>
+        </MPASMWIN-AS>
+        <MPASMWIN-LD>
+        </MPASMWIN-LD>
+        <mpasmsuite>
+        </mpasmsuite>
+      </item>
       <MPASMWIN-AS>
         <property key="cross.reference.file" value=""/>
         <property key="default.radix" value="HEX"/>
@@ -120,6 +182,14 @@
         <property key="hex-output-format" value="INHX32"/>
         <property key="map-file" value="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map"/>
       </MPASMWIN-LD>
+      <item path="Simple1.asm" ex="false" overriding="false">
+        <MPASMWIN-AS>
+        </MPASMWIN-AS>
+        <MPASMWIN-LD>
+        </MPASMWIN-LD>
+        <mpasmsuite>
+        </mpasmsuite>
+      </item>
       <Simulator>
         <property key="codecoverage.enabled" value="Disable"/>
         <property key="codecoverage.enableoutputtofile" value="false"/>
@@ -522,6 +592,30 @@
                   value=""/>
         <property key="warningmessagebreakoptions.warningmessages" value="holdstate"/>
       </Simulator>
+      <item path="Test.asm" ex="true" overriding="false">
+        <MPASMWIN-AS>
+        </MPASMWIN-AS>
+        <MPASMWIN-LD>
+        </MPASMWIN-LD>
+        <mpasmsuite>
+        </mpasmsuite>
+      </item>
+      <item path="UART.asm" ex="false" overriding="false">
+        <MPASMWIN-AS>
+        </MPASMWIN-AS>
+        <MPASMWIN-LD>
+        </MPASMWIN-LD>
+        <mpasmsuite>
+        </mpasmsuite>
+      </item>
+      <item path="config.asm" ex="false" overriding="false">
+        <MPASMWIN-AS>
+        </MPASMWIN-AS>
+        <MPASMWIN-LD>
+        </MPASMWIN-LD>
+        <mpasmsuite>
+        </mpasmsuite>
+      </item>
       <mpasmsuite>
         <property key="absolute-mode" value="false"/>
         <property key="eeprom-width" value="8"/>

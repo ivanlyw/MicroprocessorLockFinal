@@ -1,6 +1,9 @@
 #include p18f87k22.inc
 
-    global  LCD_Setup, LCD_Write_Message, LCD_Write_Hex
+    global  LCD_Setup, LCD_Write_Message, LCD_Write_Hex, LCD_delay_ms, LCD_init_message, LCD_SecondLine, LCD_TwoLine
+    ;global  myTable, myTable_1, myArray
+    global  myArray
+    extern  counter
 
 acs0    udata_acs   ; named variables in access ram
 LCD_cnt_l   res 1   ; reserve 1 byte for variable LCD_cnt_l
@@ -8,7 +11,13 @@ LCD_cnt_h   res 1   ; reserve 1 byte for variable LCD_cnt_h
 LCD_cnt_ms  res 1   ; reserve 1 byte for ms counter
 LCD_tmp	    res 1   ; reserve 1 byte for temporary use
 LCD_counter res 1   ; reserve 1 byte for counting through nessage
+counter2    res 1
+myTable	    res 4
+myTable_1   res 1
 
+tables	udata	0x400    ; reserve data anywhere in RAM (here at 0x400)
+myArray res 0x40    ; reserve 128 bytes for message data
+ 
 acs_ovr	access_ovr
 LCD_hex_tmp res 1   ; reserve 1 byte for variable LCD_hex_tmp	
 
@@ -151,7 +160,46 @@ lcdlp1	decf 	LCD_cnt_l,F	; no carry when 0x00 -> 0xff
 	bc 	lcdlp1		; carry, then loop again
 	return			; carry reset so return
 
+LCD_init_message
+	;movlw	myTable_l	; bytes to read
+	movwf 	counter		; our counter register
+loop 	tblrd*+			; one byte from PM to TABLAT, increment TBLPRT
+	movff	TABLAT, POSTINC0; move data from TABLAT to (FSR0), inc FSR0	
+	;movf	TABLAT, W
+	;call	LCD_Send_Byte_D 
+	decfsz	counter		; count down to zero
+	bra	loop		; keep going until finished
+		
+	;movlw	myTable_l-1	; output message to LCD (leave out "\n")
+	;movff	myTable_1-1, W
+	;lfsr	FSR2, myArray
+	return
 
+LCD_SecondLine
+	movlw b'11000000'
+	call LCD_Send_Byte_I
+	movlw .10
+	call LCD_delay_x4us
+	return
+	
+LCD_TwoLine	    ; Message stored at FSR2, length stored in W
+	movwf   LCD_counter
+	movlw   .16
+	movwf   counter2
+LCD_Loop_message_1
+	movf    POSTINC2, W
+	call    LCD_Send_Byte_D
+	decfsz  LCD_counter
+	decfsz  counter2
+	bra	LCD_Loop_message_1
+	call	LCD_SecondLine
+LCD_Loop_message_2
+	movf    POSTINC2, W
+	call    LCD_Send_Byte_D
+	decfsz  LCD_counter
+	bra	LCD_Loop_message_2
+	
+	return
     end
 
 
