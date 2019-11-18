@@ -72,7 +72,7 @@
         <makeCustomizationEnableLongLines>false</makeCustomizationEnableLongLines>
         <makeCustomizationNormalizeHexFile>false</makeCustomizationNormalizeHexFile>
       </makeCustomizationType>
-      <item path="ADC.asm" ex="true" overriding="false">
+      <item path="ADC.asm" ex="false" overriding="false">
         <MPASMWIN-AS>
         </MPASMWIN-AS>
         <MPASMWIN-LD>

@@ -1,8 +1,8 @@
 #include p18f87k22.inc
-    global keyboard_setup, read_keyboard, delay_1s
+    global keyboard_setup, read_keyboard, delay_1s, whichButton
     extern LCD_Write_Message, LCD_Setup, LCD_delay_ms, LCD_Setup, LCD_init_message, LCD_SecondLine
     global counter, sum, Button_Pressed, AsciiKey 
-    extern AsciiKey_1, AsciiKey_2, AsciiKey_3, AsciiKey_4, Button1, Button2, Button3, myArray, keyboard_memory_compare
+    extern AsciiKey_0, AsciiKey_2, AsciiKey_3, AsciiKey_4, Button1, Button2, Button3, myArray, keyboard_memory_compare
 
 acs3	udata_acs   ; reserve data space in access ram
 col	res 1
@@ -11,9 +11,10 @@ sum	res 1
 key	res 4
 key_counter res 1
 AsciiKey res 1	;stores ASCII code of keyboard charaters
-Message1_len    res 1
+MessageX_len    res 1
 DisplayKey  res 1
 asterix res 1
+ whichButton	res 1
 ;myArray_2 res 0x20
 
 counter res 1
@@ -51,7 +52,8 @@ start_again
     addwf col, ACCESS
     movwf sum
     movff sum, AsciiKey
-     
+    movff sum, whichButton
+    
     call LCD_delay_ms	;run to allow charge capacitance following change out output
      
     call Button1
@@ -65,22 +67,25 @@ start_again
 read_keyboard
     	call	LCD_Setup
 	call	LCD_SecondLine
-Message1 data	    "Input Passcode  \n"	; message, plus carriage return
-	movlw   .17
-	movwf   Message1_len
+MessageX data	    "Input Passcode\n"	; message, plus carriage return
+	movlw   .15
+	movwf   MessageX_len
+	clrf	FSR0
 	lfsr	FSR0, myArray
-	movlw	upper(Message1)	; address of data in PM
+	movlw	upper(MessageX)	; address of data in PM
 	movwf	TBLPTRU		; load upper bits to TBLPTRU
-	movlw	high(Message1)	; address of data in PM
+	movlw	high(MessageX)	; address of data in PM
 	movwf	TBLPTRH		; load high byte to TBLPTRH
-	movlw	low(Message1)	; address of data in PM
+	movlw	low(MessageX)	; address of data in PM
 	movwf	TBLPTRL		; load low byte to TBLPTRL
-	movff	Message1_len, W
+	movff	MessageX_len, W
 	call    LCD_init_message
-	movlw	Message1_len-1	; output message to LCD (leave out "\n")
-	movff	Message1_len-1, W
+	movlw	MessageX_len-1	; output message to LCD (leave out "\n")
+	movff	MessageX_len-1, W
+	;clrf	FSR2
 	lfsr	FSR2, myArray
-	call LCD_Write_Message
+	;call	LCD_TwoLine
+	call	LCD_Write_Message
 	
    
     movlw .42		;move asterisk ascii to file reserve
@@ -116,7 +121,7 @@ input_more_numbers
     
 Write_Message1 
     call LCD_Setup
-    movff AsciiKey, AsciiKey_1	    ;move input to memory for storage
+    movff AsciiKey, AsciiKey_0	    ;move input to memory for storage
     
     lfsr  FSR2, DisplayKey	    ;load address of AsciiKey to FSR2
     movlw .1
@@ -194,6 +199,7 @@ Write_Message4
     call asterisk
     call asterisk
     goto keyboard_memory_compare
+    ;return
     
 asterisk				    ;write asterix subroutine
     clrf  FSR2
@@ -442,5 +448,3 @@ num_77
     call counter_comparison
 
 	end
-
-

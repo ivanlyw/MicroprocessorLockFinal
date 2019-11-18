@@ -1,4 +1,4 @@
-	#include p18f87k22.inc
+#include p18f87k22.inc
 
 	;extern	UART_Setup, UART_Transmit_Message   ; external UART subroutines
 	extern  LCD_Setup, LCD_Write_Message, LCD_SecondLine, LCD_init_message, myArray, LCD_TwoLine	    ; external LCD subroutines
@@ -8,10 +8,10 @@
 	extern	read_keyboard, set_passcode
 	extern	Button_Pressed
 	;extern	keyboard_start
-	extern	AsciiKey , set_passcode
+	extern	AsciiKey , set_passcode, whichButton
 	;extern	myTable, myTable_1, myArray
 	
-	global AsciiKey_1, AsciiKey_2, AsciiKey_3, AsciiKey_4, resets
+	global AsciiKey_0, AsciiKey_2, AsciiKey_3, AsciiKey_4, resets, Welcome_msg
 
 	
 acs0	udata_acs   ; reserve data space in access ram
@@ -32,7 +32,7 @@ pdata	code    ; a section of programme memory for storing data
 
 acs1	udata_acs 	
 EightBit    res 1 ; reserve 1 byte for 8 bit number
-AsciiKey_1   res 1
+AsciiKey_0   res 1
 AsciiKey_2   res 1
 AsciiKey_3   res 1
 AsciiKey_4   res 1
@@ -55,6 +55,16 @@ start 	;movlw	0XFF
 	;call	Eight_Sixteen
 	;call	Sixteen_Sixteen
 	
+	
+resets	movlw	0x7D		;initialise passcode to 0
+	movwf	AsciiKey
+	movwf	AsciiKey_0
+	movwf	AsciiKey_2
+	movwf	AsciiKey_3
+	movwf	AsciiKey_4
+	call	set_passcode
+	
+Welcome_msg	
 Message1 data	    "Welcome, press  button to start \n"	; message, plus carriage return
 	movlw   .33
 	movwf   Message1_len
@@ -72,15 +82,10 @@ Message1 data	    "Welcome, press  button to start \n"	; message, plus carriage 
 	lfsr	FSR2, myArray
 	call	LCD_TwoLine
 	
-resets	movlw	0x7D		;initialise passcode to 0
-	movwf	AsciiKey
-	movwf	AsciiKey_1
-	movwf	AsciiKey_2
-	movwf	AsciiKey_3
-	movwf	AsciiKey_4
-	call	set_passcode
+
 ;	movwf	myTable_1	;initialise message lengh to 0
 	;call	set_passcode
+	clrf	whichButton
 	call	Button_Pressed
 	
 ;	lfsr	FSR0, myArray	; Load FSR0 with address in RAM	
