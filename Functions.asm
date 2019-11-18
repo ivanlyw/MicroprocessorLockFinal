@@ -5,7 +5,7 @@
     global passcode1, passcode2, passcode3, passcode4, delay_10s
     extern AsciiKey_1, AsciiKey_2, AsciiKey_3, AsciiKey_4;, myTable,  myTable_1, myArray 
     extern LCD_Setup, myArray
-    
+    extern store1, store2, store3, store4
 
 
 acs2    udata_acs
@@ -23,33 +23,41 @@ main code
  
 set_passcode		   ;saves keyboard input to exernal memory
     movff AsciiKey_1, passcode1
-    call write1
+    ;call write1
+    call    store1
     movff AsciiKey_2, passcode2
-    call write2
+    ;call write2
+    call    store2
     movff AsciiKey_3, passcode3
-    call write3
+    ;call write3
+    call    store3
     movff AsciiKey_4, passcode4
-    call write4
+    ;call write4
+    call    store4
     return
  
 keyboard_memory_compare	    ;compares keyboard input with external memory
     movlw 0x00
     movwf wrong_counter
-    call read1
+    ;call read1
     movff AsciiKey_1, W
-    cpfseq passcode1
+    ;cpfseq passcode1
+    cpfseq storeKey1
     call wrong_passcode
-    call read2
+    ;call read2
     movff AsciiKey_2, W
-    cpfseq passcode2
+    ;cpfseq passcode2
+    cpfseq storeKey2
     call wrong_passcode
-    call read3
+    ;call read3
     movff AsciiKey_3, W
-    cpfseq passcode3
+    ;cpfseq passcode3
+    cpfseq storeKey3
     call wrong_passcode
-    call read4
+    ;call read4
     movff AsciiKey_4, W
-    cpfseq passcode4
+    ;cpfseq passcode4
+    cpfseq storeKey1
     call wrong_passcode
     movlw 0x01		    ;light green LED
     movwf PORTC

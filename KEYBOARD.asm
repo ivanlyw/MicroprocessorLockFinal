@@ -1,7 +1,7 @@
 #include p18f87k22.inc
     global keyboard_setup, read_keyboard, delay_1s
     extern LCD_Write_Message, LCD_Setup, LCD_delay_ms, LCD_Setup, LCD_init_message, LCD_SecondLine
-    global counter, sum, Button_Pressed, AsciiKey
+    global counter, sum, Button_Pressed, AsciiKey 
     extern AsciiKey_1, AsciiKey_2, AsciiKey_3, AsciiKey_4, Button1, Button2, Button3, myArray, keyboard_memory_compare
 
 acs3	udata_acs   ; reserve data space in access ram
@@ -12,7 +12,7 @@ key	res 4
 key_counter res 1
 AsciiKey res 1	;stores ASCII code of keyboard charaters
 Message1_len    res 1
-
+DisplayKey  res 1
 asterix res 1
 ;myArray_2 res 0x20
 
@@ -118,7 +118,7 @@ Write_Message1
     call LCD_Setup
     movff AsciiKey, AsciiKey_1	    ;move input to memory for storage
     
-    lfsr  FSR2, AsciiKey	    ;load address of AsciiKey to FSR2
+    lfsr  FSR2, DisplayKey	    ;load address of AsciiKey to FSR2
     movlw .1
     call LCD_Write_Message	    ;write last digit of input key
     
@@ -138,7 +138,7 @@ Write_Message2
     ;call asterisk
     
     clrf FSR2			    ;write passcode letter
-    lfsr  FSR2, AsciiKey 
+    lfsr  FSR2, DisplayKey 
     movlw .1
     call LCD_Write_Message  
     
@@ -160,7 +160,7 @@ Write_Message3
     ;call asterisk
     
     clrf FSR2			    ;write passcode letter
-    lfsr  FSR2, AsciiKey 
+    lfsr  FSR2, DisplayKey 
     movlw .1
     call LCD_Write_Message
     
@@ -182,7 +182,7 @@ Write_Message4
     movff AsciiKey, AsciiKey_4
     
     clrf FSR2			    ;write passcode letter
-    lfsr  FSR2, AsciiKey 
+    lfsr  FSR2, DisplayKey 
     movlw .1
     call LCD_Write_Message
     
@@ -241,33 +241,35 @@ num_EE
     movlw  0xEE		;hardcoding all 16 possible variations
     cpfseq sum		;skips is input equal
     goto   num_ED	;if not equal to EE runs through variations until it is equal
-    movwf AsciiKey
+    movff  sum, AsciiKey
     movlw  .1		;corresponding keyboard value
     movwf key
     movlw .49
-    movwf AsciiKey
+    movwf DisplayKey
     
     call counter_comparison
     
 num_ED
     movlw  0xED	
     cpfseq sum		
-    goto   num_EB	
+    goto   num_EB
+    movff  sum, AsciiKey
     movlw  .2		
     movwf  key
     movlw .50
-    movwf AsciiKey
+    movwf DisplayKey
     
     call counter_comparison
     
 num_EB
     movlw  0xEB	
     cpfseq sum		
-    goto   num_E7	
+    goto   num_E7
+    movff  sum, AsciiKey
     movlw  .3		
     movwf  key
     movlw .51
-    movwf AsciiKey
+    movwf DisplayKey
     
     call counter_comparison
     
@@ -275,11 +277,12 @@ num_EB
 num_E7
     movlw  0xE7
     cpfseq sum		
-    goto   num_DE	
+    goto   num_DE
+    movff  sum, AsciiKey
     movlw  0x0F		
     movwf  key
     movlw .70
-    movwf AsciiKey
+    movwf DisplayKey
     
     call counter_comparison
     
@@ -287,11 +290,12 @@ num_E7
 num_DE
     movlw  0xDE
     cpfseq sum		
-    goto   num_DD	
+    goto   num_DD
+    movff  sum, AsciiKey
     movlw  .4	
     movwf  key
     movlw .52
-    movwf AsciiKey
+    movwf DisplayKey
     
     call counter_comparison
     
@@ -299,11 +303,12 @@ num_DE
 num_DD
     movlw  0xDD
     cpfseq sum		
-    goto   num_DB	
+    goto   num_DB
+    movff  sum, AsciiKey
     movlw  .5	
     movwf  key
     movlw .53
-    movwf AsciiKey
+    movwf DisplayKey
     
     call counter_comparison
     
@@ -311,11 +316,12 @@ num_DD
 num_DB
     movlw  0xDB
     cpfseq sum		
-    goto   num_D7	
+    goto   num_D7
+    movff  sum, AsciiKey
     movlw  .6	
     movwf  key
     movlw .54
-    movwf AsciiKey
+    movwf DisplayKey
     
     call counter_comparison
     
@@ -323,11 +329,12 @@ num_DB
 num_D7
     movlw  0xD7
     cpfseq sum		
-    goto   num_BE	
+    goto   num_BE
+    movff  sum, AsciiKey
     movlw  0x0E	
     movwf  key
     movlw .69
-    movwf AsciiKey
+    movwf DisplayKey
     
     call counter_comparison
     
@@ -335,11 +342,12 @@ num_D7
 num_BE
     movlw  0xBE
     cpfseq sum		
-    goto   num_BD	
+    goto   num_BD
+    movff  sum, AsciiKey
     movlw  .7	
     movwf  key
     movlw .55
-    movwf AsciiKey
+    movwf DisplayKey
     
    call counter_comparison
     
@@ -347,11 +355,12 @@ num_BE
 num_BD
     movlw  0xBD
     cpfseq sum		
-    goto   num_BB	
+    goto   num_BB
+    movff  sum, AsciiKey
     movlw  .8	
     movwf  key
     movlw .56
-    movwf AsciiKey
+    movwf DisplayKey
     
     call counter_comparison
     
@@ -359,11 +368,12 @@ num_BD
 num_BB
     movlw  0xBB
     cpfseq sum		
-    goto   num_B7	
+    goto   num_B7
+    movff  sum, AsciiKey
     movlw  .9	
     movwf  key
     movlw .57
-    movwf AsciiKey
+    movwf DisplayKey
     
     call counter_comparison
     
@@ -371,11 +381,12 @@ num_BB
 num_B7
     movlw  0xB7
     cpfseq sum		
-    goto   num_7E	
+    goto   num_7E
+    movff  sum, AsciiKey
     movlw  0x0D	
     movwf  key
     movlw .68
-    movwf AsciiKey
+    movwf DisplayKey
     
     call counter_comparison
     
@@ -383,23 +394,25 @@ num_B7
 num_7E
     movlw  0x7E
     cpfseq sum		
-    goto   num_7D	
+    goto   num_7D
+    movff  sum, AsciiKey
     movlw  0x0A	
     movwf  key
     movlw .65
-    movwf AsciiKey
+    movwf DisplayKey
     
     call counter_comparison
     
 
 num_7D
     movlw  0x7D
-    cpfseq sum		
-    goto   num_7B	
+    cpfseq sum	
+    goto   num_7B
+    movff  sum, AsciiKey
     movlw  .0
     movwf  key
     movlw .48
-    movwf AsciiKey
+    movwf DisplayKey
     
     call counter_comparison
     
@@ -407,11 +420,12 @@ num_7D
 num_7B
     movlw  0x7B
     cpfseq sum		
-    goto   num_77	
+    goto   num_77
+    movff  sum, AsciiKey
     movlw  0x0B
     movwf  key
     movlw .66
-    movwf AsciiKey
+    movwf DisplayKey
     
     call counter_comparison
     
@@ -420,9 +434,10 @@ num_77
     movlw  0x77
     cpfseq sum
     goto input_more_numbers
+    movff  sum, AsciiKey
     movwf  key
     movlw .67
-    movwf AsciiKey
+    movwf DisplayKey
     
     call counter_comparison
 

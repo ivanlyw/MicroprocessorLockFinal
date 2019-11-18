@@ -12,8 +12,6 @@ LCD_cnt_ms  res 1   ; reserve 1 byte for ms counter
 LCD_tmp	    res 1   ; reserve 1 byte for temporary use
 LCD_counter res 1   ; reserve 1 byte for counting through nessage
 counter2    res 1
-myTable	    res 4
-myTable_1   res 1
 
 tables	udata	0x400    ; reserve data anywhere in RAM (here at 0x400)
 myArray res 0x40    ; reserve 128 bytes for message data

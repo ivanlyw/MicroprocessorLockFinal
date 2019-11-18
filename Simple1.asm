@@ -72,7 +72,7 @@ Message1 data	    "Welcome, press  button to start \n"	; message, plus carriage 
 	lfsr	FSR2, myArray
 	call	LCD_TwoLine
 	
-resets	movlw	0x30		;initialise passcode to 0
+resets	movlw	0x7D		;initialise passcode to 0
 	movwf	AsciiKey
 	movwf	AsciiKey_1
 	movwf	AsciiKey_2

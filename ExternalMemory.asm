@@ -1,37 +1,71 @@
 #include p18f87k22.inc
-	global read1, read2, read3, read4, write1, write2, write3, write4
-	extern passcode1, passcode2, passcode3, passcode4
+	;global read1, read2, read3, read4, write1, write2, write3, write4
+	;extern passcode1, passcode2, passcode3, passcode4
 	
 	
-main	code	
+		
 
 	constant	highmemory=0x10 ;Address for high half of 16 bit memory
 	constant	lowmemory=0x11  ;Address for low memory
 
-	movlw high(0xAAAA)	    ;reads highest charaters of 16 bit word
-	movwf highmemory 
-	movlw low(0xAAAA)	    ;reads lowest charaters of 16 bit word
-	movwf lowmemory
-
+acs5	udata_acs
+passcode1 res 1
+passcode2 res 1
+passcode3 res 1
+passcode4 res 1
+ 
+    code
+    movlw 0x00
+    movwf passcode2 
+    call Memory_Setup
+    movlw 0x23
+    movwf passcode1
+    call write1
+    call read1
+    
+Memory_Setup
+	setf TRISD ; Tri-state PortE
+	banksel PADCFG1 ; PADCFG1 is not in Access Bank!!
+	bsf PADCFG1, RDPU, BANKED ; PortJ pull-ups on
+	movlb 0x00 ; set BSR back to Bank 0
+	
+	movlw	0xFF		    ;Both input, clock high 
+	movwf	PORTJ, ACCESS 
+	movlw	0x0		    ;Setting PORTD to outputs
+	movwf	TRISJ, ACCESS
+	;movlw	0x0a
+	;movwf	PORTJ
+	movlw	0x0
+	movwf	TRISD, ACCESS	    ;Setting PORTE to output
+	
+	return
+	
 write1
-	movlw	passcode1
-	movwf	LATJ	    ;Write to register Lat J
-	movlw	0xFE	    ;set OE1 to low
-	movwf	PORTH
-	call	bigdelay
-	movlw	0xFF	    ;set OE1 back up
-	movwf	PORTH
-	setf	TRISE	    ;Set port e to tristate
+	clrf	LATD, ACCESS
+	movf	passcode1, W
+	movwf	LATD, ACCESS	    ;Write to register Lat J
+	movlw	0xFD	    ;set CP1 to low
+	;movwf	PORTH
+	movwf	PORTJ, ACCESS
+	;call	bigdelay
+	;movlw	0xFF	    ;set OE1 back up
+	;movwf	PORTH
+	;movwf	PORTD
+	setf	TRISD, ACCESS	    ;Set port e to tristate
 	return
 	
 read1	
-	movlw	0xFD
-	movwf	PORTH		;set CP1low
-	call	bigdelay
-	movff	PORTJ, passcode1	;store passcode in file for compare
+	;movlw	0xFF
+	;movwf	TRISJ, ACCESS	;set portj to input
+	movlw	0xFE
+	;movwf	PORTH		;set OE1low
+	movwf	PORTD, ACCESS
+	;call	bigdelay
+	movff	PORTJ, passcode2	;store passcode in file for compare
 	movlw	0xFF		;set CP1 back up
-	movwf	PORTH
-	setf	TRISJ		;Set port e to tristate
+	;movwf	PORTH
+	movwf	PORTD, ACCESS
+	setf	TRISJ, ACCESS		;Set port e to tristate
 	return
 	
 write2

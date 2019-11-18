@@ -42,7 +42,7 @@ Message1 data	    "Unlock lock     \n"	; message, plus carriage return
 	movlw	Message1_len-1	; output message to LCD (leave out "\n")
 	movff	Message1_len-1, W
 	lfsr	FSR2, myArray
-	call LCD_Write_Message
+	call	LCD_Write_Message
 	
 	call    delay_1s
 	goto	read_keyboard
