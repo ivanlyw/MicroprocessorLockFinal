@@ -1,6 +1,6 @@
 #include p18f87k22.inc
     global keyboard_setup, read_keyboard, delay_1s, whichButton
-    extern LCD_Write_Message, LCD_Setup, LCD_delay_ms, LCD_Setup, LCD_init_message, LCD_SecondLine
+    extern LCD_Write_Message, LCD_Setup, LCD_delay_ms, LCD_Setup, LCD_init_message, LCD_SecondLine, LCD_TwoLine
     global counter, sum, Button_Pressed, AsciiKey 
     extern AsciiKey_0, AsciiKey_2, AsciiKey_3, AsciiKey_4, Button1, Button2, Button3, myArray, keyboard_memory_compare
 
@@ -14,7 +14,7 @@ AsciiKey res 1	;stores ASCII code of keyboard charaters
 MessageX_len    res 1
 DisplayKey  res 1
 asterix res 1
- whichButton	res 1
+whichButton	res 1
 ;myArray_2 res 0x20
 
 counter res 1
@@ -65,28 +65,29 @@ start_again
     return 
     
 read_keyboard
-    	call	LCD_Setup
-	call	LCD_SecondLine
-MessageX data	    "Input Passcode\n"	; message, plus carriage return
-	movlw   .15
-	movwf   MessageX_len
-	clrf	FSR0
-	lfsr	FSR0, myArray
-	movlw	upper(MessageX)	; address of data in PM
-	movwf	TBLPTRU		; load upper bits to TBLPTRU
-	movlw	high(MessageX)	; address of data in PM
-	movwf	TBLPTRH		; load high byte to TBLPTRH
-	movlw	low(MessageX)	; address of data in PM
-	movwf	TBLPTRL		; load low byte to TBLPTRL
-	movff	MessageX_len, W
-	call    LCD_init_message
-	movlw	MessageX_len-1	; output message to LCD (leave out "\n")
-	movff	MessageX_len-1, W
-	;clrf	FSR2
-	lfsr	FSR2, myArray
-	;call	LCD_TwoLine
-	call	LCD_Write_Message
-	
+    	
+    
+    call	LCD_Setup
+MessageX data	    "Input Password       \n"	; message, plus carriage return
+    movlw	.22
+    movwf	MessageX_len
+    lfsr	FSR0, myArray
+    movlw	upper(MessageX)	; address of data in PM
+    movwf	TBLPTRU		; load upper bits to TBLPTRU
+    movlw	high(MessageX)	; address of data in PM
+    movwf	TBLPTRH		; load high byte to TBLPTRH
+    movlw	low(MessageX)	; address of data in PM
+    movwf	TBLPTRL		; load low byte to TBLPTRL
+    movff	MessageX_len, W
+    call	LCD_init_message
+    movlw	MessageX_len-1	; output message to LCD (leave out "\n")
+    movff	MessageX_len-1, W
+    lfsr	FSR2, myArray
+    call	LCD_TwoLine
+    
+    call delay_1s
+    call delay_1s
+    call delay_1s
    
     movlw .42		;move asterisk ascii to file reserve
     movwf  asterix

@@ -65,8 +65,8 @@ keyboard_memory_compare	    ;compares keyboard input with external memory
     movwf PORTC
     
     call    LCD_Setup
-Message1 data	    "Password correct\n"	; message, plus carriage return
-    movlw	.17
+Message1 data	    "Password correct    \n"	; message, plus carriage return
+    movlw	.22
     movwf	Message1_len
     lfsr	FSR0, myArray
     movlw	upper(Message1)	; address of data in PM
@@ -80,11 +80,11 @@ Message1 data	    "Password correct\n"	; message, plus carriage return
     movlw	Message1_len-1	; output message to LCD (leave out "\n")
     movff	Message1_len-1, W
     lfsr	FSR2, myArray
-    call	LCD_Write_Message
+    call	LCD_TwoLine
     
     call delay_1s
     call delay_1s
-    ;call delay_1s
+    call delay_1s
     ;call delay_1s
     ;call delay_1s
     call    LCD_Setup
@@ -102,8 +102,8 @@ wrong_passcode
     cpfslt wrong_counter
     call buzzer
     call	LCD_Setup
-Message4 data	    "Incorrect password\n"	; message, plus carriage return
-    movlw	.19
+Message4 data	    "Factory Reset        \n"	; message, plus carriage return
+    movlw	.22
     movwf	Message4_len
     lfsr	FSR0, myArray
     movlw	upper(Message4)	; address of data in PM
@@ -121,6 +121,10 @@ Message4 data	    "Incorrect password\n"	; message, plus carriage return
     ;call	LCD_Write_Message
 	
     call	delay_1s   ;ensure message displayed for long enough
+    call	delay_1s
+;    call	delay_1s
+;    call	delay_1s    
+;    call	delay_1s
     call	read_keyboard
    
    

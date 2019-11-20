@@ -41,14 +41,17 @@ Message1 data	    "Unlock lock     \n"	; message, plus carriage return
 	movwf	TBLPTRH		; load high byte to TBLPTRH
 	movlw	low(Message1)	; address of data in PM
 	movwf	TBLPTRL		; load low byte to TBLPTRL
-	movff	Message1_len, W
+	;movff	Message1_len, W
+	movlw	Message1_len
 	call    LCD_init_message
 	movlw	Message1_len-1	; output message to LCD (leave out "\n")
-	movff	Message1_len-1, W
+	;movff	Message1_len-1, W
 	lfsr	FSR2, myArray
 	call	LCD_Write_Message
 	
 	call    delay_1s
+	call	delay_1s
+
 	goto	read_keyboard
 	call	keyboard_memory_compare	;compares input with memory
 	call	unlock
@@ -73,13 +76,14 @@ Message2 data	    "Change Passcode                 \n"	; message, plus carriage 
 	movwf	TBLPTRH		; load high byte to TBLPTRH
 	movlw	low(Message2)	; address of data in PM
 	movwf	TBLPTRL		; load low byte to TBLPTRL
-	movff	Message2_len, W
+	;movff	Message2_len, W
+	movlw	Message2_len ;;
 	call    LCD_init_message
 	movlw	Message2_len-1	; output message to LCD (leave out "\n")
-	movff	Message2_len-1, W
+	;movff	Message2_len-1, W
 	lfsr	FSR2, myArray
-	
 	call	LCD_Write_Message
+	
 	call    delay_1s
 	call	delay_1s
 	call    delay_1s
@@ -104,7 +108,7 @@ Message3 data	    "New Passcode:   \n"	; message, plus carriage return
 	movff	Message3_len, W
 	call    LCD_init_message
 	movlw	Message3_len-1	; output message to LCD (leave out "\n")
-	movff	Message3_len-1, W
+	movf	Message3_len-1, W
 	call	LCD_Write_Message
 	clrf	FSR2
 	lfsr	FSR2, myArray
