@@ -5,8 +5,8 @@ extern	LCD_Setup, LCD_Write_Message, LCD_SecondLine, LCD_init_message, LCD_TwoLi
 extern  keyboard_setup, First_Button, whichButton, AsciiKey				; external KEYBOARD subroutines
 extern	set_passcode									; external Functions subroutines
 extern	Welcome_msg									; external Messages subroutines
-		
-acs6		udata_acs   ; reserve data space in access ram
+			
+acs6		udata_acs   	; reserve data space in access ram
 counter	    	res 1   
 delay_count 	res 1   
 AsciiKey_1   	res 1
@@ -14,7 +14,7 @@ AsciiKey_2   	res 1
 AsciiKey_3   	res 1
 AsciiKey_4   	res 1
 
-rst	code	0    ; reset vector
+rst	code	0    		; reset vector
 	goto	setup
 main	code
 	; ******* Programme FLASH read Setup Code ***********************
