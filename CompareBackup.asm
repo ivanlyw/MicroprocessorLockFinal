@@ -14,7 +14,7 @@ storeKey4  res 1
 ;Each correct passcode character is stored in respective storeKey registers
 
 store1
-    movff   passcode1, storeKey1
+    movff   passcode1, storeKey1    ;stores first character of correct passcode into storeKey register
     return
     
 store2
