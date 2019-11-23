@@ -2,8 +2,8 @@
 	global 		read1, read2, read3, read4, write1, write2, write3, write4
 	extern 		passcode1, passcode2, passcode3, passcode4
 	
-	constant	highmemory=0x10 ;Address for high half of 16 bit memory
-	constant	lowmemory=0x11  ;Address for low memory
+	constant	highmemory=0x10 	;Address for high half of 16 bit memory
+	constant	lowmemory=0x11  	;Address for low memory
 
 acs2	udata_acs
 passcode1 res 1
