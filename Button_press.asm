@@ -47,7 +47,7 @@ Button3	    ;resets/re-initialises keyboard
 	movlw 0xEB
 	cpfseq AsciiKey			;checks if 3 is pressed
 	
-	return				;return to First_Button  if not equal
+	return				;return to First_Button if not equal to 1/2/3
 	
 	call	FactoryReset_msg	;displays 'Factory reset' message
 		
