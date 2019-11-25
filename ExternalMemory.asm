@@ -15,7 +15,7 @@ code
 
     
 Memory_Setup
-	setf TRISD 			;tri-state Port D
+	setf TRISD 			;sets tri-state Port D
 	banksel PADCFG1 		;PADCFG1 is not in Access Bank!!
 	bsf PADCFG1, RDPU, BANKED 	;Port D pull-ups on
 	movlb 0x00 			;set BSR back to Bank 0
