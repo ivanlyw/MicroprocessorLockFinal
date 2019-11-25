@@ -194,7 +194,7 @@ LCD_Loop_message_2
 	decfsz  LCD_counter
 	bra	LCD_Loop_message_2
 	
-	return
+	return		;
     end
 
 
