@@ -66,7 +66,7 @@ keyboard_memory_compare	    ;compares keyboard input with external memory/stored
     cpfseq 	storeKey4
     goto 	wrong_passcode
     
-    movlw 	0x01		    ;light green LED
+    movlw 	0x01		    ;lights green LED
     movwf 	PORTC
     
     call	CorrectPW_msg
