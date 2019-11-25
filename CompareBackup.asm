@@ -10,7 +10,7 @@ storeKey4  res 1
   
     code
     
-;Backup routine that doesn't rely on external memory 
+;Backup routine that doesn't rely on 4-byte external memory 
 ;Each correct passcode character is stored in respective storeKey registers
 
 store1
