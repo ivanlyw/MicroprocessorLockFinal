@@ -11,3 +11,5 @@ Correct attempts lead to a voltage been sent to Port F where it is amplified in 
 Incorrect attempts will cause the program to redirect the user to try again.
 
 Multiple incorrect attempts will result in the user being locked out for a specific amount of time before being able to retry.
+
+Code cited from https://github.com/imperialCollegeLondon/MicroprocessorsLab where appropriate.
