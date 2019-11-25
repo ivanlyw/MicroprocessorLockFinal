@@ -38,6 +38,6 @@ resets	movlw	0x7D		;initialise passcode to 0000
 	call	Welcome_msg	;displays welcome message
 	
 	clrf	whichButton	;clears register to allow for value to be loaded into
-	call	First_Button	;checks first button to call corresponding special button routine	
+	call	First_Button	;checks first button pressed to call corresponding special button routine	
      
 	end
