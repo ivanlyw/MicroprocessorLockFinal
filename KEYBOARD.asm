@@ -366,7 +366,7 @@ num_7B
 num_77	
     movlw  	0x77
     cpfseq 	sum
-    goto 	input_more_numbers		;only reaches here if no button is pressed, loops back to input stage		
+    goto 	input_more_numbers		;only reaches here if no button is pressed, loops back to input stage 		
     movff  	sum, AsciiKey
     movlw 	.67
     movwf 	DisplayKey
